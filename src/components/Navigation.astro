@@ -10,5 +10,5 @@ const navLinks = [
 ---
 
 <nav>
-  {navLinks.map((link) => <a href={link.href}>{link.text}</a>)}
+  {navLinks.map((link) => <a href={Astro.resolve(link.href)}>{link.text}</a>)}
 </nav>
