@@ -8,19 +8,80 @@ import MainLayout from '@/layouts/MainLayout.astro';
   </div>
   <article class="prose">
     <p>
-      이 페이지에 직접 CV 내용을 작성하거나, 아래와 같이 PDF 파일로 링크를
-      제공할 수 있습니다.
+       Welcome to my academic and professional profile. Below you'll find a comprehensive overview 
+      of my educational background, research experience, and professional achievements in computer science 
+      and machine learning.
     </p>
     <p>
-      <a href="/assets/cv.pdf" target="_blank" download>CV 다운로드 (PDF)</a>
+      <a href="/assets/cv.pdf" target="_blank" download>CV Download (PDF)</a>
     </p>
     <hr />
     <h2>Education</h2>
     <p>
-      <strong>Ph.D. in Computer Science</strong> | Example University | 2020 - Present
+      <strong>B.S. of Computer Science, Sungkyunkwan University</strong><br>
+      <em>Major GPA: 4.13/4.5, Total GPA: 3.86/4.5</em>
     </p>
+    
+    <!-- <p>
+      <strong>Honors:</strong> Scholarship for admission<br>
+      <strong>Leadership:</strong> President of the department soccer club<br>
+      <strong>Coursework:</strong> OS, Software Engineering, Computer Network, Programming Languages, Database, Algorithms, Automata, Data Structure, Open Source, System Programming, JAVA, C, C++, Computer Architecture, Patent and Start-up<br>
+      <strong>Skills:</strong> Linux, Virtualization (VM/Container), C, C++, Java, SQL, Kotlin, Docker, Git, Mobile App Development (Android)
+    </p> -->
 
-    <h2>Experience</h2>
-    <p><strong>Research Assistant</strong> | Example Lab | 2021 - Present</p>
+    <h2>Work & Leadership Experience</h2>
+    
+    <h3>MeritzFire - Mobile Developer</h3>
+    <p>
+      <em>IT Development Team @ Solution Unit | 2024 - 2025</em><br>
+      Sales support APP mobile development and management
+    </p>
+    
+    <h3>FADU Technologies - SSD IP Engineer</h3>
+    <p>
+      <em>SoC Team [Offer Accepted] | 2024</em><br>
+      Fabless semiconductor company developing Flash SSD controllers and storage solutions
+    </p>
+    
+    <h3>Samsung Electronics - Software Intern</h3>
+    <p>
+      <em>Solution PE Team @ Samsung Electronics DS | 2023</em><br>
+      Developed and optimized E-Storage performance benchmark tools for Apple devices
+    </p>
+    <ul>
+      <li>Built Mac OS & iOS testing frameworks utilizing C/C++ and Swift, developing filesystem test modules for both Sequential and Random Read/Write operations with advanced I/O controls (O_Sync, O_Direct, F_Nocache)</li>
+      <li>Designed <strong>Aging test system</strong> to observe E-Storage <strong>Wearleveling</strong> characteristic during long-duration testing</li>
+      <li>Implemented <strong>chunk-based data pattern verification</strong> that detects system testing failures and enables precise <strong>test repair</strong> from the point of interruption, significantly improving test reliability</li>
+    </ul>
+    
+    <h3>Posco International - Industry-Academic Cooperation Project</h3>
+    <p>
+      <em>2020</em><br>
+      Developed an <strong>automatic collection</strong> system for economic/financial market information by country and item
+    </p>
+    <ul>
+      <li>Created a crawling program and web page to <strong>increase work efficiency</strong> for Posco-International staff</li>
+      <li>Reduced crawling time from <strong>55s to 10s</strong> by applying <strong>multiprocessing</strong> and <strong>multithreading</strong></li>
+    </ul>
+
+    <!-- <h2>Project Experience</h2>
+    
+    <h3>Enhanced XV6 - OS Project</h3>
+    <p><em>2021</em></p>
+    <p>A simple Unix-like operating system designed for educational purposes at MIT.</p>
+    <ul>
+      <li>Added a Priority field to the existing Process Structure and implemented system calls for priority adjustment</li>
+      <li>Implemented a <strong>Completely Fair Scheduler (CFS)</strong> using vruntime to ensure fair CPU allocation</li>
+      <li>Enhanced memory mapping and <strong>memory management</strong> by implementing <strong>MMAP</strong>, Munmap, and a Page Fault handler</li>
+      <li>Implemented <strong>page replacement</strong> using an LRU list & the Clock algorithm to manage <strong>swap-in/out</strong> when memory is low</li>
+    </ul>
+    
+    <h3>Maximize Open Source Program Branch Coverage using Limited Test Cases</h3>
+    <p><em>Software Engineering | 2024</em></p>
+    <ul>
+      <li>Developed 30 test cases to maximize branch coverage of the open-source C program 'find' command</li>
+      <li>Achieved comprehensive code analysis and test case optimization using <strong>gcov</strong> tool</li>
+      <li>Ranked <strong>3rd among 100 students</strong> through persistent effort and dedication to maximizing performance metrics</li>
+    </ul> -->
   </article>
 </MainLayout>
