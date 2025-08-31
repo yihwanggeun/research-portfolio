@@ -1,14 +1,14 @@
 ---
 const navLinks = [
-  { href: '/paper-reviews', text: 'Paper Reviews' },
-  { href: '/personal-projects', text: 'Personal Project' },
+  { href: '/research-portfolio/paper-reviews', text: 'Paper Reviews' },
+  { href: '/research-portfolio/personal-projects', text: 'Personal Project' },
   // { href: "/studies", text: "Study" },
   // { href: "/writings", text: "Writings" },
-  { href: '/cv', text: 'CV' },
-  { href: '/about', text: 'About' },
+  { href: '/research-portfolio/cv', text: 'CV' },
+  { href: '/research-portfolio/about', text: 'About' },
 ];
 ---
 
 <nav>
-  {navLinks.map((link) => <a href={Astro.resolve(link.href)}>{link.text}</a>)}
+  {navLinks.map((link) => <a href={link.href}>{link.text}</a>)}
 </nav>
