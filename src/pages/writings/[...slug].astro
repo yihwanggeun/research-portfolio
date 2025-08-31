@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+import PostLayout from '../../layouts/PostLayout.astro';
+
+export async function getStaticPaths() {
+  const writings = await getCollection('writings');
+  return writings.map((writing) => ({
+    params: { slug: writing.slug },
+    props: writing,
+  }));
+}
+
+const writing = Astro.props;
+const { Content } = await writing.render();
+---
+
+<PostLayout frontmatter={writing.data}>
+  {
+    writing.data.image && (
+      <img
+        src={writing.data.image}
+        alt={writing.data.title}
+        style="max-width:100%; height:auto; margin-bottom:1em;"
+      />
+    )
+  }
+  <Content />
+</PostLayout>

@@ -1,0 +1,28 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import Card from '../../components/Card.astro';
+import { getCollection } from 'astro:content';
+
+const writings = (await getCollection('writings')).sort(
+  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+);
+---
+
+<MainLayout title="글">
+  <h1>글</h1>
+  {
+    writings.length === 0 ? (
+      <p>아직 작성된 글이 없습니다.</p>
+    ) : (
+      writings.map((writing) => (
+        <Card
+          title={writing.data.title}
+          href={`/writings/${writing.slug}/`}
+          description={writing.data.description}
+          date={writing.data.publishDate}
+          tags={writing.data.tags}
+        />
+      ))
+    )
+  }
+</MainLayout>

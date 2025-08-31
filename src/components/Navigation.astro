@@ -1,0 +1,14 @@
+---
+const navLinks = [
+  { href: '/paper-reviews', text: 'Paper Reviews' },
+  { href: '/personal-projects', text: 'Personal Project' },
+  // { href: "/studies", text: "Study" },
+  // { href: "/writings", text: "Writings" },
+  { href: '/cv', text: 'CV' },
+  { href: '/about', text: 'About' },
+];
+---
+
+<nav>
+  {navLinks.map((link) => <a href={link.href}>{link.text}</a>)}
+</nav>

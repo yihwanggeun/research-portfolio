@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '@/layouts/MainLayout.astro';
+import Card from '@/components/Card.astro';
+
+const projects = (await getCollection('personal-projects')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<MainLayout title="Personal Projects">
+  <div class="page-header">
+    <h1>Personal Projects</h1>
+  </div>
+
+  {
+    projects.map((project) => (
+      <Card
+        href={`/personal-projects/${project.slug}`}
+        title={project.data.title}
+        date={project.data.date}
+        description={project.data.description}
+        meta={project.data.technologies.join(', ')}
+      />
+    ))
+  }
+</MainLayout>

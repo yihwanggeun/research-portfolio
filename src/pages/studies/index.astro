@@ -1,0 +1,129 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '@/layouts/MainLayout.astro';
+import Card from '@/components/Card.astro';
+import ViewToggle from '@/components/ViewToggle.astro';
+
+// 1. 모든 스터디 글을 날짜 내림차순으로 정렬
+const allStudies = (await getCollection('studies')).sort(
+  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+);
+
+// 2. 카테고리별로 글을 그룹화 (폴더 뷰용)
+const studiesByCategory = allStudies.reduce(
+  (acc, study) => {
+    const { category } = study.data;
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(study);
+    return acc;
+  },
+  {} as Record<string, typeof allStudies>
+);
+---
+
+<MainLayout title="My Studies">
+  <div class="page-header">
+    <h1>My Studies</h1>
+  </div>
+
+  <ViewToggle />
+
+  <div id="folder-view" class="view">
+    {
+      Object.entries(studiesByCategory).map(([category, posts]) => (
+        <div class="folder">
+          <div class="folder-header">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#a0aec0"
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+            >
+              <path d="M10 4H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z" />
+            </svg>
+            <h3>{category}</h3>
+          </div>
+          <div class="folder-posts">
+            <ul>
+              {posts.map((post) => (
+                <li>
+                  <a href={`/studies/${post.slug}`}>{post.data.title}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <div id="list-view" class="view">
+    {
+      allStudies.map((study) => (
+        <Card
+          href={`/studies/${study.slug}`}
+          title={study.data.title}
+          date={study.data.publishDate}
+          description={study.data.description}
+          meta={study.data.category}
+        />
+      ))
+    }
+  </div>
+</MainLayout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const viewToggle = document.getElementById('view-toggle');
+    const folderView = document.getElementById('folder-view');
+    const listView = document.getElementById('list-view');
+    const toggleOptions = document.querySelectorAll('.view-toggle-option');
+
+    if (!viewToggle || !folderView || !listView) return;
+
+    // 뷰 설정 함수
+    const setView = (view) => {
+      if (view === 'folder') {
+        viewToggle.classList.remove('list-active');
+        folderView.classList.add('active');
+        listView.classList.remove('active');
+      } else {
+        // 'list'
+        viewToggle.classList.add('list-active');
+        folderView.classList.remove('active');
+        listView.classList.add('active');
+      }
+
+      toggleOptions.forEach((opt) => {
+        opt.classList.toggle('active', opt.dataset.view === view);
+      });
+
+      localStorage.setItem('preferredView', view);
+    };
+
+    // 토글 클릭 이벤트
+    viewToggle.addEventListener('click', (e) => {
+      const targetOption = (e.target as HTMLElement).closest(
+        '.view-toggle-option'
+      );
+      if (targetOption) {
+        setView(targetOption.dataset.view);
+      }
+    });
+
+    // 폴더(아코디언) 클릭 이벤트
+    const folderHeaders = document.querySelectorAll('.folder-header');
+    folderHeaders.forEach((header) => {
+      header.addEventListener('click', () => {
+        header.parentElement.classList.toggle('open');
+      });
+    });
+
+    // 페이지 로드 시 저장된 뷰 설정 적용
+    const preferredView = localStorage.getItem('preferredView') || 'folder';
+    setView(preferredView);
+  });
+</script>
