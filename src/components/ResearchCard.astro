@@ -1,0 +1,122 @@
+---
+interface Props {
+    title: string;
+    conference?: string;
+    year?: string;
+    tags?: string[];
+    href: string;
+    thumbnail?: string;
+}
+
+const { title, conference, year, tags = [], href, thumbnail } = Astro.props;
+---
+
+<a href={href} class="research-card fade-in">
+    <div class="card-content">
+        <div class="card-header">
+            {conference && <span class="conference-badge">{conference}</span>}
+            {year && <span class="year">{year}</span>}
+        </div>
+        <h3>{title}</h3>
+        <div class="tags">
+            {tags.map((tag) => <span class="tag">#{tag}</span>)}
+        </div>
+        <div class="card-footer">
+            <span class="read-more">Read Review &rarr;</span>
+        </div>
+    </div>
+</a>
+
+<style>
+    .research-card {
+        display: block;
+        background-color: var(--color-bg-primary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        transition: var(--transition-standard);
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .research-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--color-accent-subtle);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        font-family: var(--font-sans);
+        font-size: 0.85rem;
+    }
+
+    .conference-badge {
+        color: var(--color-text-accent);
+        font-weight: 600;
+        background-color: var(--color-accent-light);
+        padding: 0.2rem 0.6rem;
+        border-radius: 6px;
+    }
+
+    .year {
+        color: var(--color-text-secondary);
+    }
+
+    h3 {
+        font-size: 1.2rem; /* Slightly smaller */
+        margin-bottom: 1rem;
+        line-height: 1.4;
+        color: var(--color-text-primary);
+        font-weight: 600;
+        flex-grow: 1; /* Push footer down */
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-bottom: 2.5rem; /* Space for footer */
+    }
+
+    .tag {
+        font-size: 0.75rem;
+        color: var(--color-text-secondary);
+        background-color: var(--color-bg-tertiary);
+        padding: 0.25rem 0.75rem;
+        border-radius: 99px;
+        font-family: var(--font-sans);
+        transition: background-color 0.2s;
+    }
+
+    .research-card:hover .tag {
+        background-color: var(--color-bg-secondary);
+    }
+
+    .card-footer {
+        position: absolute;
+        bottom: 2rem;
+        left: 2rem;
+    }
+
+    .read-more {
+        color: var(--color-accent-main);
+        font-size: 0.9rem;
+        font-weight: 500;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: var(--transition-standard);
+    }
+
+    .research-card:hover .read-more {
+        opacity: 1;
+        transform: translateX(0);
+    }
+</style>

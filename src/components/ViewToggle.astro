@@ -1,39 +1,17 @@
 ---
-// 이 컴포넌트는 순수 HTML과 아이콘만 렌더링합니다.
-// 실제 기능은 이 컴포넌트를 사용하는 페이지의 <script> 태그에서 처리합니다.
+import FolderIcon from "./icons/FolderIcon.astro";
+import ListIcon from "./icons/ListIcon.astro";
 ---
 
 <div class="view-toggle-container">
   <div class="view-toggle" id="view-toggle">
     <div class="view-toggle-slider"></div>
     <div class="view-toggle-option active" data-view="folder">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        ><path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z"
-        ></path></svg
-      >
+      <FolderIcon />
       <span>Folder</span>
     </div>
     <div class="view-toggle-option" data-view="list">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        ><path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M8.25 6.75h7.5M8.25 12h7.5m-7.5 5.25h7.5M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-        ></path></svg
-      >
+      <ListIcon />
       <span>List</span>
     </div>
   </div>

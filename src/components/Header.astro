@@ -1,9 +1,13 @@
 ---
-import Navigation from './Navigation.astro';
-const siteTitle = "Yellu's Library"; // Your site title
+import Navigation from "./Navigation.astro";
+import { siteConfig } from "@/data/site";
 ---
 
 <header class="site-header">
-  <a href="/research-portfolio/" class="site-title">{siteTitle}</a>
-  <Navigation />
+  <div class="container">
+    <a href="/research-portfolio/" class="site-title"
+      >{siteConfig.headerTitle}</a
+    >
+    <Navigation />
+  </div>
 </header>

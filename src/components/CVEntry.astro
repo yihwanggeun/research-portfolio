@@ -1,0 +1,80 @@
+---
+import type { CVEntry } from "@/data/cv";
+
+interface Props {
+    entry: CVEntry;
+}
+
+const { entry } = Astro.props;
+---
+
+<div class="cv-entry">
+    <h3>{entry.title}</h3>
+    <p class="cv-subtitle">
+        {entry.subtitle}
+        {entry.period && <span class="cv-period"> | {entry.period}</span>}
+    </p>
+    {entry.description && <p class="cv-description">{entry.description}</p>}
+    {
+        entry.details && entry.details.length > 0 && (
+            <ul>
+                {entry.details.map((detail) => (
+                    <li>{detail}</li>
+                ))}
+            </ul>
+        )
+    }
+</div>
+
+<style>
+    .cv-entry {
+        margin-bottom: 2rem;
+        position: relative;
+        /* Removed border-left for cleaner look */
+    }
+
+    .cv-entry h3 {
+        margin-bottom: 0.25rem;
+        font-size: 1.2rem;
+        color: var(--color-text-primary);
+        font-family: var(--font-sans);
+        font-weight: 600;
+    }
+
+    .cv-subtitle {
+        font-family: var(--font-sans);
+        font-size: 0.95rem;
+        color: var(--color-text-accent);
+        margin-bottom: 0.75rem;
+        font-style: normal;
+        font-weight: 500;
+    }
+
+    .cv-period {
+        color: var(--color-text-secondary);
+        font-size: 0.9rem;
+        font-weight: 400;
+    }
+
+    .cv-description {
+        margin-bottom: 0.75rem;
+        color: var(--color-text-primary);
+    }
+
+    ul {
+        margin-top: 0.5rem;
+        padding-left: 1.2rem;
+        list-style-type: disc;
+    }
+
+    li {
+        margin-bottom: 0.4rem;
+        color: var(--color-text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    li::marker {
+        color: var(--color-accent-main);
+    }
+</style>

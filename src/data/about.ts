@@ -1,0 +1,10 @@
+export const aboutData = {
+    title: "About",
+    intro: "Hello! I'm Hwang-Geun Yi, a computer science graduate with a deep passion for bridging the gap between hardware and applications through innovative software solutions. I specialize in developing systems that unlock the full potential of modern computing architectures, particularly in the realm of high-performance machine learning infrastructure.",
+    paragraphs: [
+        "This website serves as a digital repository for my academic journey and personal projects. I've carefully selected and migrated content from my Obsidian vault, where I maintain comprehensive notes and documentation in markdown format, to share insights and learnings with the broader community.",
+        "My primary areas of interest include <strong>System Software</strong>, <strong>ML Compilers</strong>, <strong>CUTLASS</strong> (CUDA Templates for Linear Algebra Subroutines), and <strong>Compiler Design</strong>. I'm particularly fascinated by the intersection of high-performance computing and machine learning, focusing on optimizing GPU kernels and developing efficient execution engines for large-scale neural network workloads.",
+        "Through this platform, you'll find various research reviews, technical deep-dives, and project documentation that reflect my exploration of these cutting-edge technologies. I believe in open knowledge sharing and hope these materials prove valuable to fellow researchers and developers.",
+        "If you have any questions, collaboration ideas, or would like to discuss anything related to my work, please don't hesitate to reach out. I'm always eager to connect with like-minded individuals in the field."
+    ]
+};

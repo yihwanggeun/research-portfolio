@@ -4,18 +4,105 @@ interface Props {
   title?: string;
 }
 
-const { src, title = 'Embedded PDF' } = Astro.props;
+const { src, title = "Embedded PDF" } = Astro.props;
 ---
 
-<div class="pdf-embed-container">
-  <iframe
-    src={src}
-    title={title}
-    width="100%"
-    height="600px"
-    style="border:1px solid var(--color-border);"
-  >
-    이 브라우저는 iframe을 지원하지 않습니다. <a href={src}>PDF를
-    다운로드</a>하여 확인해주세요.
-  </iframe>
+<div class="pdf-container fade-in">
+  <div class="pdf-header">
+    <span class="pdf-title">Slides Preview</span>
+    <a href={src} download class="pdf-download-btn">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="w-4 h-4"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+        ></path>
+      </svg>
+      Download PDF
+    </a>
+  </div>
+  <div class="pdf-frame-wrapper">
+    <iframe src={src} title={title} width="100%" height="600px"> </iframe>
+    <p class="pdf-fallback">
+      This browser does not support PDFs. <a href={src}>Download the PDF</a> to view
+      it.
+    </p>
+  </div>
 </div>
+
+<style>
+  .pdf-container {
+    margin: 3rem 0;
+    background-color: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+  }
+
+  .pdf-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-bg-secondary);
+  }
+
+  .pdf-title {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+
+  .pdf-download-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-accent-main);
+    font-weight: 500;
+    transition: var(--transition-standard);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+  }
+
+  .pdf-download-btn:hover {
+    background-color: var(--color-accent-light);
+    color: var(--color-text-accent);
+  }
+
+  .pdf-download-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .pdf-frame-wrapper {
+    position: relative;
+  }
+
+  .pdf-frame-wrapper iframe {
+    border: none;
+    display: block;
+  }
+
+  .pdf-fallback {
+    padding: 2rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+  }
+
+  .pdf-fallback a {
+    color: var(--color-accent-main);
+    text-decoration: underline;
+  }
+</style>

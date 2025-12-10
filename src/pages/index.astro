@@ -1,12 +1,71 @@
 ---
-import MainLayout from '@/layouts/MainLayout.astro';
+import MainLayout from "@/layouts/MainLayout.astro";
+import { siteConfig } from "@/data/site";
 ---
 
 <MainLayout title="Home">
-  <section class="intro-section">
-    <h1>A Record of an Intellectual Journey</h1>
-    <p>
-      This is a digital archive of my academic research, personal projects, and musings.
+  <section class="hero-section fade-in">
+    <h1>{siteConfig.introTitle}</h1>
+    <p class="hero-text">
+      {siteConfig.introDescription}
     </p>
+    <div class="hero-actions">
+      <a href="/research-portfolio/paper-reviews" class="btn">View Research</a>
+      <a
+        href="/research-portfolio/about"
+        class="btn"
+        style="margin-left: 1rem; border-color: var(--color-text-secondary); color: var(--color-text-secondary);"
+        >About Me</a
+      >
+    </div>
+  </section>
+
+  <section
+    class="featured-section fade-in"
+    style="animation-delay: 0.2s; margin-bottom: 2rem;"
+  >
+    <h2>Featured Work</h2>
+    <div class="featured-grid">
+      <!-- Placeholder for featured items, will be populated dynamically later -->
+      <div class="card">
+        <h3>Research Focus</h3>
+        <p>
+          Exploring the intersection of High-Performance Computing and Machine
+          Learning Compilers.
+        </p>
+        <a href="/research-portfolio/about">Read more &rarr;</a>
+      </div>
+      <div class="card">
+        <h3>Latest Review</h3>
+        <p>Check out my latest analysis on efficient LLM execution engines.</p>
+        <a href="/research-portfolio/paper-reviews">Browse Reviews &rarr;</a>
+      </div>
+    </div>
   </section>
 </MainLayout>
+
+<style>
+  .hero-section {
+    padding: 6rem 0 4rem;
+    max-width: 800px;
+  }
+
+  .hero-text {
+    font-size: 1.25rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+  }
+
+  .featured-section {
+    padding: 4rem 0;
+    border-top: 1px solid var(--color-bg-tertiary);
+  }
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+</style>
