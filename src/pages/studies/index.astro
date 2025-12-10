@@ -1,12 +1,12 @@
 ---
-import { getCollection } from 'astro:content';
-import MainLayout from '@/layouts/MainLayout.astro';
-import Card from '@/components/Card.astro';
-import ViewToggle from '@/components/ViewToggle.astro';
+import { getCollection } from "astro:content";
+import MainLayout from "@/layouts/MainLayout.astro";
+import Card from "@/components/Card.astro";
+import ViewToggle from "@/components/ViewToggle.astro";
 
 // 1. 모든 스터디 글을 날짜 내림차순으로 정렬
-const allStudies = (await getCollection('studies')).sort(
-  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+const allStudies = (await getCollection("studies")).sort(
+  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
 );
 
 // 2. 카테고리별로 글을 그룹화 (폴더 뷰용)
@@ -19,7 +19,7 @@ const studiesByCategory = allStudies.reduce(
     acc[category].push(study);
     return acc;
   },
-  {} as Record<string, typeof allStudies>
+  {} as Record<string, typeof allStudies>,
 );
 ---
 
@@ -76,38 +76,38 @@ const studiesByCategory = allStudies.reduce(
 </MainLayout>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const viewToggle = document.getElementById('view-toggle');
-    const folderView = document.getElementById('folder-view');
-    const listView = document.getElementById('list-view');
-    const toggleOptions = document.querySelectorAll('.view-toggle-option');
+  document.addEventListener("DOMContentLoaded", () => {
+    const viewToggle = document.getElementById("view-toggle");
+    const folderView = document.getElementById("folder-view");
+    const listView = document.getElementById("list-view");
+    const toggleOptions = document.querySelectorAll(".view-toggle-option");
 
     if (!viewToggle || !folderView || !listView) return;
 
     // 뷰 설정 함수
     const setView = (view) => {
-      if (view === 'folder') {
-        viewToggle.classList.remove('list-active');
-        folderView.classList.add('active');
-        listView.classList.remove('active');
+      if (view === "folder") {
+        viewToggle.classList.remove("list-active");
+        folderView.classList.add("active");
+        listView.classList.remove("active");
       } else {
         // 'list'
-        viewToggle.classList.add('list-active');
-        folderView.classList.remove('active');
-        listView.classList.add('active');
+        viewToggle.classList.add("list-active");
+        folderView.classList.remove("active");
+        listView.classList.add("active");
       }
 
       toggleOptions.forEach((opt) => {
-        opt.classList.toggle('active', opt.dataset.view === view);
+        opt.classList.toggle("active", opt.dataset.view === view);
       });
 
-      localStorage.setItem('preferredView', view);
+      localStorage.setItem("preferredView", view);
     };
 
     // 토글 클릭 이벤트
-    viewToggle.addEventListener('click', (e) => {
+    viewToggle.addEventListener("click", (e) => {
       const targetOption = (e.target as HTMLElement).closest(
-        '.view-toggle-option'
+        ".view-toggle-option",
       );
       if (targetOption) {
         setView(targetOption.dataset.view);
@@ -115,15 +115,15 @@ const studiesByCategory = allStudies.reduce(
     });
 
     // 폴더(아코디언) 클릭 이벤트
-    const folderHeaders = document.querySelectorAll('.folder-header');
+    const folderHeaders = document.querySelectorAll(".folder-header");
     folderHeaders.forEach((header) => {
-      header.addEventListener('click', () => {
-        header.parentElement.classList.toggle('open');
+      header.addEventListener("click", () => {
+        header.parentElement.classList.toggle("open");
       });
     });
 
     // 페이지 로드 시 저장된 뷰 설정 적용
-    const preferredView = localStorage.getItem('preferredView') || 'folder';
+    const preferredView = localStorage.getItem("preferredView") || "folder";
     setView(preferredView);
   });
 </script>

@@ -311,11 +311,34 @@ nav a:hover {
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
   :root {
-    --header-height: 60px;
+    --header-height: auto;
+    /* Allow height to grow */
+  }
+
+  .site-header {
+    height: auto;
+    padding: 1rem 0;
+    position: relative;
+    /* Unstick on mobile if needed, or keep fixed but allow scroll */
+  }
+
+  .site-header .container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0 1.5rem;
+  }
+
+  .site-title {
+    font-size: 1.1rem;
+    white-space: normal;
+    /* Allow wrapping */
   }
 
   h1 {
     font-size: 2rem;
+    word-break: break-word;
+    /* Prevent overflow */
   }
 
   h2 {
@@ -324,22 +347,32 @@ nav a:hover {
   }
 
   .container {
-    padding: 0 1rem;
-  }
-
-  .site-header .container {
-    padding: 0 1rem;
+    padding: 0 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   nav {
     gap: 1rem;
+    flex-wrap: wrap;
+    /* Allow nav links to wrap */
   }
 
   nav a {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
 
   .card {
     padding: 1.5rem;
+  }
+
+  /* Ensure no horizontal scroll */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Fix main padding since header is relative and --header-height is auto */
+  main {
+    padding-top: 2rem;
   }
 }

@@ -1,9 +1,9 @@
 ---
-import MainLayout from './MainLayout.astro';
-import type { CollectionEntry } from 'astro:content';
+import MainLayout from "./MainLayout.astro";
+import type { CollectionEntry } from "astro:content";
 
 interface Props {
-  entry: CollectionEntry<'personal-projects'> | CollectionEntry<'studies'>;
+  entry: CollectionEntry<"personal-projects"> | CollectionEntry<"studies">;
 }
 
 const { entry } = Astro.props;
@@ -12,22 +12,22 @@ const frontmatter = entry.data;
 
 // 날짜 포맷 함수
 const formatDate = (date: Date) => {
-  return new Date(date).toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+  return new Date(date).toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 };
 ---
 
 <MainLayout title={frontmatter.title} description={frontmatter.description}>
   <article class="prose">
-    <h1>{frontmatter.title}</h1>
+    <h3>{frontmatter.title}</h3>
     <div class="post-meta">
       {
         frontmatter.date && (
           <span>
-            작성일:{' '}
+            작성일:{" "}
             <time datetime={frontmatter.date.toISOString()}>
               {formatDate(frontmatter.date)}
             </time>
@@ -37,7 +37,7 @@ const formatDate = (date: Date) => {
       {
         frontmatter.publishDate && (
           <span>
-            작성일:{' '}
+            작성일:{" "}
             <time datetime={frontmatter.publishDate.toISOString()}>
               {formatDate(frontmatter.publishDate)}
             </time>
