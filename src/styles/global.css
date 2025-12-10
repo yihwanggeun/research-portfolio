@@ -307,3 +307,39 @@ nav a:hover {
 .fade-in {
   animation: fadeIn 0.6s ease-out forwards;
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  :root {
+    --header-height: 60px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  .site-header .container {
+    padding: 0 1rem;
+  }
+
+  nav {
+    gap: 1rem;
+  }
+
+  nav a {
+    font-size: 0.85rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+}
