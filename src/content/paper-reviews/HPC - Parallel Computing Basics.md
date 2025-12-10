@@ -3,7 +3,7 @@ title: 'HPC: Parallel Computing Basics'
 description: 'A comprehensive overview of Parallel Architecture, Flynn’s Taxonomy, and strategies for extracting parallelism in hardware.'
 date: 2024-05-10
 technologies: ['HPC', 'Parallel Computing', 'Computer Architecture']
-repoLink: ''
+
 ---
 
 ## Introduction
