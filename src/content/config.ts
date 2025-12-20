@@ -36,6 +36,7 @@ const paperReviewsCollection = defineCollection({
     repoLink: z.string().url().optional(),
     liveLink: z.string().url().optional(),
     image: z.string().optional(),
+    pdf: z.string().optional(),
   }),
 });
 

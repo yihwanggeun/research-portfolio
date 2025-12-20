@@ -5,21 +5,31 @@ import { siteConfig } from "@/data/site";
 
 <MainLayout title="Home">
   <section class="hero-section fade-in">
-    <div class="hero-content">
-      <h1>A Record of an Intellectual Journey</h1>
-      <p class="hero-text">
-        This is a digital archive of my academic research, personal projects,
-        and musings.
-      </p>
-      <div class="hero-actions">
-        <a href="/research-portfolio/paper-reviews" class="btn">View Research</a
-        >
-        <a
-          href="/research-portfolio/about"
-          class="btn"
-          style="margin-left: 1rem; border-color: var(--color-text-secondary); color: var(--color-text-secondary);"
-          >About Me</a
-        >
+    <div class="hero-wrapper">
+      <div class="hero-content">
+        <h1>A Record of an Intellectual Journey</h1>
+        <p class="hero-text">
+          This is a digital archive of my academic research, personal projects,
+          and musings.
+        </p>
+        <div class="hero-actions">
+          <a href="/research-portfolio/paper-reviews" class="btn"
+            >View Research</a
+          >
+          <a
+            href="/research-portfolio/about"
+            class="btn"
+            style="margin-left: 1rem; border-color: var(--color-text-secondary); color: var(--color-text-secondary);"
+            >About Me</a
+          >
+        </div>
+      </div>
+      <div class="hero-image">
+        <img
+          src="/research-portfolio/images/profile-yellu.jpg"
+          alt="Yellu"
+          class="profile-img"
+        />
       </div>
     </div>
 
@@ -96,13 +106,41 @@ import { siteConfig } from "@/data/site";
     text-align: left; /* Left align */
     position: relative;
     padding: 0;
+    margin-top: -2rem; Counteract MainLayout padding
+  }
+
+  .hero-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 4rem;
+    max-width: var(--max-width);
+    margin-bottom: 4rem;
+    /* margin-bottom removed for true centering */
   }
 
   .hero-content {
-    max-width: 800px;
-    /* padding: 0 2rem; Removed to prevent double padding */
-    margin-bottom: 10em; /* Space for scroll indicator */
-    width: 100%;
+    flex: 1;
+    max-width: 600px;
+  }
+
+  .hero-image {
+    flex-shrink: 0;
+  }
+
+  .profile-img {
+    width: 250px;
+    height: 300px; /* Slightly taller for portrait */
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--color-border);
+    transition: transform 0.3s ease;
+  }
+
+  .profile-img:hover {
+    transform: scale(1.02);
   }
 
   .hero-text {
@@ -215,12 +253,28 @@ import { siteConfig } from "@/data/site";
       text-align: left; /* Left align text on mobile */
     }
 
+    .hero-wrapper {
+      flex-direction: column-reverse; /* Text on top, image below? Or column for Image top? Usually Column: Image -> Text or Text -> Image. Let's do Text Top for now as requested by designs usually, or simple column. Actually column-reverse puts HTML order (Text, Img) -> Img, Text. Let's stick to column --> Text, Image */
+      /* Actually typical user profile: Image Top? */
+      /* Given current HTML: Content (Text), Image. */
+      /* column: Content, Image. column-reverse: Image, Content. */
+      flex-direction: column-reverse;
+      gap: 2rem;
+      margin-bottom: 4rem;
+      align-items: flex-start;
+    }
+
     .hero-content {
       /* padding: 0 1.5rem; Removed double padding */
       margin-left: 0;
       margin-right: 0;
       width: 100%; /* Ensure full width for left alignment */
       box-sizing: border-box;
+    }
+
+    .profile-img {
+      width: 150px;
+      height: 180px;
     }
 
     .hero-text {

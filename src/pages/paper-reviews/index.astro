@@ -1,19 +1,74 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro";
 import ResearchCard from "@/components/ResearchCard.astro";
+import PDFGridCard from "@/components/PDFGridCard.astro";
 import { paperReviews } from "@/data/papers";
 ---
 
 <MainLayout title="Paper Reviews">
   <div class="page-header fade-in">
-    <h1>Paper Reviews</h1>
-    <p class="subtitle">
-      Deep dives into High-Performance Computing, ML Compilers, and System
-      Architecture.
-    </p>
+    <div class="header-content">
+      <div>
+        <h1>Paper Reviews</h1>
+        <p class="subtitle">
+          Deep dives into High-Performance Computing, ML Compilers, and System
+          Architecture.
+        </p>
+      </div>
+
+      <div class="view-toggle">
+        <button id="view-card" class="toggle-btn" aria-label="Card View">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            ><rect x="3" y="3" width="7" height="7"></rect><rect
+              x="14"
+              y="3"
+              width="7"
+              height="7"></rect><rect x="14" y="14" width="7" height="7"
+            ></rect><rect x="3" y="14" width="7" height="7"></rect></svg
+          >
+          <span>Cards</span>
+        </button>
+        <button id="view-pdf" class="toggle-btn active" aria-label="PDF View">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            ><path
+              d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+            ></path><polyline points="14 2 14 8 20 8"></polyline><line
+              x1="16"
+              y1="13"
+              x2="8"
+              y2="13"></line><line x1="16" y1="17" x2="8" y2="17"
+            ></line><polyline points="10 9 9 9 8 9"></polyline></svg
+          >
+          <span>PDFs</span>
+        </button>
+      </div>
+    </div>
   </div>
 
-  <div class="research-grid fade-in" style="animation-delay: 0.1s;">
+  <!-- Standard Card View -->
+  <div
+    id="grid-card-view"
+    class="research-grid hidden fade-in"
+    style="animation-delay: 0.1s;"
+  >
     {
       paperReviews.map((paper) => (
         <ResearchCard
@@ -27,6 +82,19 @@ import { paperReviews } from "@/data/papers";
       ))
     }
   </div>
+
+  <!-- PDF Thumbnail View -->
+  <div id="grid-pdf-view" class="pdf-grid fade-in">
+    {
+      paperReviews.map((paper) => (
+        <PDFGridCard
+          title={paper.title}
+          href={paper.href}
+          pdfUrl={paper.pdf || ""}
+        />
+      ))
+    }
+  </div>
 </MainLayout>
 
 <style>
@@ -36,17 +104,137 @@ import { paperReviews } from "@/data/papers";
     padding-bottom: 2rem;
   }
 
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
   .subtitle {
     font-size: 1.1rem;
     color: var(--color-text-secondary);
     max-width: 600px;
+    margin-bottom: 0;
   }
 
+  /* Toggle Styles */
+  .view-toggle {
+    display: flex;
+    background: var(--color-bg-tertiary);
+    padding: 0.25rem;
+    border-radius: 99px;
+    border: 1px solid var(--color-border);
+  }
+
+  .toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    background: transparent;
+    border-radius: 99px;
+    color: var(--color-text-secondary);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .toggle-btn:hover {
+    color: var(--color-text-primary);
+  }
+
+  .toggle-btn.active {
+    background: white;
+    color: var(--color-accent-main);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* Grid Styles */
   .research-grid {
     display: flex;
     flex-direction: column;
     gap: 2rem;
     width: 100%;
-    margin-top: 2rem; /* Extra spacing to separate from header */
+    margin-top: 2rem;
+  }
+
+  .pdf-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    width: 100%;
+    margin-top: 2rem;
+    align-items: start;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  @media (max-width: 768px) {
+    .pdf-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .header-content {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 </style>
+
+<script>
+  // Handle Toggle Logic
+  function setupToggle() {
+    const btnCard = document.getElementById("view-card");
+    const btnPdf = document.getElementById("view-pdf");
+    const viewCard = document.getElementById("grid-card-view");
+    const viewPdf = document.getElementById("grid-pdf-view");
+
+    if (!btnCard || !btnPdf || !viewCard || !viewPdf) return;
+
+    function switchView(view: string) {
+      if (!btnCard || !btnPdf || !viewCard || !viewPdf) return;
+
+      if (view === "card") {
+        viewCard.classList.remove("hidden");
+        viewPdf.classList.add("hidden");
+        btnCard.classList.add("active");
+        btnPdf.classList.remove("active");
+        localStorage.setItem("paperViewMode", "card");
+      } else {
+        viewCard.classList.add("hidden");
+        viewPdf.classList.remove("hidden");
+        btnCard.classList.remove("active");
+        btnPdf.classList.add("active");
+        localStorage.setItem("paperViewMode", "pdf");
+
+        // Trigger resize event to ensure PDFs render if they were lazy/hidden
+        window.dispatchEvent(new Event("resize"));
+      }
+    }
+
+    btnCard.addEventListener("click", () => switchView("card"));
+    btnPdf.addEventListener("click", () => switchView("pdf"));
+
+    // Check saved preference or Default to PDF
+    const savedMode = localStorage.getItem("paperViewMode");
+
+    // Explicitly check for 'card' to switch, otherwise stay on default (PDF)
+    if (savedMode === "card") {
+      switchView("card");
+    } else {
+      // Ensure PDF view is active (redundant for initial load due to HTML structure, but good for logic consistency)
+      switchView("pdf");
+    }
+  }
+
+  // Run on load standard and astro transition
+  document.addEventListener("astro:page-load", setupToggle);
+  if (document.readyState === "complete") setupToggle();
+  else window.addEventListener("load", setupToggle);
+</script>

@@ -1,8 +1,9 @@
 ---
-title: 'CUrator: Efficient LLM Execution Engine'
-description: 'An analysis of CUrator, an engine that optimizes LLM execution by integrating and tuning CUDA libraries like CUTLASS and cuBLAS.'
+title: "CUrator: Efficient LLM Execution Engine"
+description: "An analysis of CUrator, an engine that optimizes LLM execution by integrating and tuning CUDA libraries like CUTLASS and cuBLAS."
 date: 2024-06-16
 technologies: ['LLM', 'CUDA', 'System Architecture', 'Compilers']
+pdf: "/research-portfolio/papers/CUrator.pdf"
 
 ---
 

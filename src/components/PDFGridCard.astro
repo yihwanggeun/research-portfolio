@@ -1,0 +1,407 @@
+---
+interface Props {
+    title: string;
+    pdfUrl: string;
+    href: string;
+}
+
+const { title, pdfUrl, href } = Astro.props;
+// Generate a unique ID safe string from title
+const safeId = title.replace(/[^a-z0-9]/gi, "-").toLowerCase();
+---
+
+<div class="pdf-card" data-pdf-url={pdfUrl} id={`pdf-card-${safeId}`}>
+    <!-- Controls Overlay -->
+    <div class="pdf-controls">
+        <button class="nav-btn prev-btn" aria-label="Previous Page" disabled>
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><polyline points="15 18 9 12 15 6"></polyline></svg
+            >
+        </button>
+        <div class="page-indicator">
+            <span class="curr-page">1</span> / <span class="total-pages"
+                >--</span
+            >
+        </div>
+        <button class="nav-btn next-btn" aria-label="Next Page" disabled>
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><polyline points="9 18 15 12 9 6"></polyline></svg
+            >
+        </button>
+        <a
+            href={pdfUrl}
+            download
+            class="download-btn"
+            aria-label="Download PDF"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                ><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                ></path><polyline points="7 10 12 15 17 10"></polyline><line
+                    x1="12"
+                    y1="15"
+                    x2="12"
+                    y2="3"></line></svg
+            >
+        </a>
+    </div>
+
+    <div class="pdf-container">
+        <div class="loading-overlay">
+            <div class="spinner"></div>
+        </div>
+        <canvas id={`pdf-render-${safeId}`}></canvas>
+        <a href={href} class="details-link">
+            <!-- <span class="sr-only">Read Review</span> -->
+        </a>
+    </div>
+
+    <div class="info">
+        <h3><a href={href}>{title}</a></h3>
+    </div>
+</div>
+
+<style>
+    .pdf-card {
+        background: var(--color-bg-primary);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        transition: var(--transition-standard);
+        border: 1px solid var(--color-border);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        /* Removed fixed height: 600px */
+        width: 100%;
+    }
+
+    .pdf-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--color-accent-subtle);
+    }
+
+    .pdf-container {
+        background: #f0f0f0;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 200px; /* Minimum height for loading state */
+    }
+
+    canvas {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        display: block;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    canvas.loaded {
+        opacity: 1;
+    }
+
+    /* Controls */
+    .pdf-controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 0.5rem;
+        background: var(--color-bg-tertiary);
+        border-bottom: 1px solid var(--color-border);
+        z-index: 20;
+    }
+
+    .nav-btn {
+        background: white;
+        border: 1px solid var(--color-border);
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--color-text-secondary);
+        transition: all 0.2s;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+        background: var(--color-accent-light);
+        color: var(--color-accent-main);
+    }
+
+    .nav-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .download-btn {
+        position: absolute;
+        right: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-text-secondary);
+        transition: color 0.2s;
+    }
+
+    .download-btn:hover {
+        color: var(--color-accent-main);
+    }
+
+    .page-indicator {
+        font-size: 0.9rem;
+        font-family: var(--font-sans);
+        color: var(--color-text-secondary);
+        font-variant-numeric: tabular-nums;
+    }
+
+    .loading-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        background: rgba(255, 255, 255, 0.8);
+        transition: opacity 0.3s;
+    }
+
+    .loading-overlay.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .spinner {
+        width: 30px;
+        height: 30px;
+        border: 3px solid rgba(159, 122, 234, 0.3);
+        border-radius: 50%;
+        border-top-color: var(--color-accent-main);
+        animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Overlay Link for detailed view (less intrusive now) */
+    .details-link {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 5; /* Below controls (z=20) */
+    }
+
+    /* Allow clicking controls through the link overlay */
+    .pdf-controls {
+        position: relative;
+        pointer-events: auto;
+    }
+
+    .info {
+        padding: 1rem 1.5rem;
+        background: var(--color-bg-primary);
+        border-top: 1px solid var(--color-border);
+        z-index: 20; /* Ensure clickable links in footer */
+    }
+
+    h3 {
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.4;
+    }
+
+    h3 a {
+        color: var(--color-text-primary);
+        text-decoration: none;
+    }
+    h3 a:hover {
+        color: var(--color-accent-main);
+    }
+</style>
+
+<script>
+    import * as pdfjsLib from "pdfjs-dist";
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "/research-portfolio/scripts/pdf.worker.min.mjs";
+
+    // Store PDF state per card
+    interface PDFState {
+        pdf: any;
+        currentPage: number;
+        totalPages: number;
+        scale: number;
+        rendering: boolean;
+        canvas: HTMLCanvasElement;
+        ctx: CanvasRenderingContext2D;
+    }
+
+    const cardStates = new Map<string, PDFState>();
+
+    async function initPDFCards() {
+        const cards = document.querySelectorAll(".pdf-card");
+
+        for (const card of cards) {
+            const url = (card as HTMLElement).dataset.pdfUrl;
+            if (!url) continue;
+
+            const cardId = card.id;
+            const canvas = card.querySelector("canvas") as HTMLCanvasElement;
+            const ctx = canvas.getContext("2d");
+            const loadingOverlay = card.querySelector(".loading-overlay");
+
+            // Controls
+            const prevBtn = card.querySelector(
+                ".prev-btn",
+            ) as HTMLButtonElement;
+            const nextBtn = card.querySelector(
+                ".next-btn",
+            ) as HTMLButtonElement;
+            const currPageEl = card.querySelector(".curr-page") as HTMLElement;
+            const totalPageEl = card.querySelector(
+                ".total-pages",
+            ) as HTMLElement;
+
+            if (!ctx) continue;
+
+            try {
+                const loadingTask = pdfjsLib.getDocument(url);
+                const pdf = await loadingTask.promise;
+
+                const state: PDFState = {
+                    pdf,
+                    currentPage: 1,
+                    totalPages: pdf.numPages,
+                    scale: 1.5,
+                    rendering: false,
+                    canvas,
+                    ctx,
+                };
+
+                cardStates.set(cardId, state);
+
+                // Update UI
+                if (totalPageEl)
+                    totalPageEl.textContent = pdf.numPages.toString();
+
+                // Render first page
+                await renderPage(state, card as HTMLElement);
+
+                if (loadingOverlay) loadingOverlay.classList.add("hidden");
+
+                // Event Listeners
+                prevBtn.addEventListener("click", () => changePage(cardId, -1));
+                nextBtn.addEventListener("click", () => changePage(cardId, 1));
+
+                updateButtons(state, prevBtn, nextBtn, currPageEl);
+            } catch (err) {
+                console.error(`Error loading PDF ${url}:`, err);
+                if (loadingOverlay)
+                    loadingOverlay.innerHTML =
+                        '<span style="color:red;font-size:0.8rem">Error</span>';
+            }
+        }
+    }
+
+    async function renderPage(state: PDFState, cardEl: HTMLElement) {
+        if (state.rendering) return;
+        state.rendering = true;
+
+        try {
+            const page = await state.pdf.getPage(state.currentPage);
+            const viewport = page.getViewport({ scale: state.scale });
+
+            state.canvas.height = viewport.height;
+            state.canvas.width = viewport.width;
+
+            const renderContext = {
+                canvasContext: state.ctx,
+                viewport: viewport,
+            };
+
+            await page.render(renderContext as any).promise;
+            state.canvas.classList.add("loaded");
+        } finally {
+            state.rendering = false;
+        }
+    }
+
+    function changePage(cardId: string, delta: number) {
+        const state = cardStates.get(cardId);
+        if (!state) return;
+
+        const newPage = state.currentPage + delta;
+        if (newPage >= 1 && newPage <= state.totalPages) {
+            state.currentPage = newPage;
+
+            const card = document.getElementById(cardId);
+            if (card) {
+                renderPage(state, card);
+
+                const prevBtn = card.querySelector(
+                    ".prev-btn",
+                ) as HTMLButtonElement;
+                const nextBtn = card.querySelector(
+                    ".next-btn",
+                ) as HTMLButtonElement;
+                const currPageEl = card.querySelector(
+                    ".curr-page",
+                ) as HTMLElement;
+
+                updateButtons(state, prevBtn, nextBtn, currPageEl);
+            }
+        }
+    }
+
+    function updateButtons(
+        state: PDFState,
+        prev: HTMLButtonElement,
+        next: HTMLButtonElement,
+        indicator: HTMLElement,
+    ) {
+        prev.disabled = state.currentPage <= 1;
+        next.disabled = state.currentPage >= state.totalPages;
+        indicator.textContent = state.currentPage.toString();
+    }
+
+    document.addEventListener("astro:page-load", initPDFCards);
+    if (document.readyState === "complete") initPDFCards();
+    else window.addEventListener("load", initPDFCards);
+</script>

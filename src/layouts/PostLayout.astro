@@ -1,5 +1,6 @@
 ---
 import MainLayout from "./MainLayout.astro";
+import PDFGridCard from "@/components/PDFGridCard.astro";
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
@@ -25,7 +26,7 @@ const formatDate = (date: Date) => {
     <h3>{frontmatter.title}</h3>
     <div class="post-meta">
       {
-        frontmatter.date && (
+        "date" in frontmatter && (
           <span>
             작성일:{" "}
             <time datetime={frontmatter.date.toISOString()}>
@@ -35,7 +36,7 @@ const formatDate = (date: Date) => {
         )
       }
       {
-        frontmatter.publishDate && (
+        "publishDate" in frontmatter && (
           <span>
             작성일:{" "}
             <time datetime={frontmatter.publishDate.toISOString()}>
@@ -46,6 +47,27 @@ const formatDate = (date: Date) => {
       }
     </div>
 
+    {/* PDF Viewer Section */}
+    {
+      // Check if 'pdf' field exists (dynamically cast frontmatter to any to bypass strict type if needed, or update interface)
+      (frontmatter as any).pdf && (
+        <div class="pdf-viewer-container">
+          <PDFGridCard
+            title={frontmatter.title}
+            pdfUrl={(frontmatter as any).pdf}
+            href="#"
+          />
+        </div>
+      )
+    }
+
     <Content />
   </article>
 </MainLayout>
+
+<style>
+  .pdf-viewer-container {
+    margin: 2rem 0;
+    max-width: 100%;
+  }
+</style>
